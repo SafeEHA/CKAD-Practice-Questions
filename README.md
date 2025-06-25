@@ -20,7 +20,7 @@ Practice time management with exam-realistic complexity
 ## How to Use This Repository
 These questions are meant to be practiced in a simulator environment like:
 
-killer.sh CKAD Simulator (recommended)
+[killer.sh](https://killer.sh) CKAD Simulator (recommended)
 Other Kubernetes practice environments
 Your own Kubernetes clusters
 
