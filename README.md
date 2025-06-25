@@ -1,6 +1,5 @@
 # CKAD Test Questions
 
-## Real CKAD Exam Practice Questions
 This repository contains actual practice questions from the CKAD Simulator on killer.sh. These questions are designed to help you get comfortable with the exact structure and format you'll encounter in the real CKAD exam environment.
 
 ## What You'll Find Here
