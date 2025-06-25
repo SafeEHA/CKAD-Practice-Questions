@@ -338,3 +338,66 @@ containers:
 ```
 
 </details>
+
+
+## Question 21 |  Requests and Limits, ServiceAccount
+
+**Solve this question on instance:** `ssh ckad7326`
+
+Team Neptune needs 3 Pods of image `httpd:2.4-alpine`, create a Deployment named `neptune-10ab` for this. The containers should be named `neptune-pod-10ab`. Each container should have a memory request of 20Mi and a memory limit of 50Mi.
+Team Neptune has it's own ServiceAccount `neptune-sa-v2` under which the Pods should run. The Deployment should be in Namespace `neptune`.
+
+<details>
+<summary>Answer</summary>
+
+k -n neptune create deployment -h # help
+k -n neptune create deploy -h # deploy is short for deployment
+
+k -n neptune create deploy neptune-10ab --image=httpd:2.4-alpine --dry-run=client -oyaml > 21.yaml
+
+vim 21.yaml
+
+Now make the required changes using vim:
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: neptune-10ab
+  name: neptune-10ab
+  namespace: neptune
+spec:
+  replicas: 3                   # change
+  selector:
+    matchLabels:
+      app: neptune-10ab
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: neptune-10ab
+    spec:
+      serviceAccountName: neptune-sa-v2 # add
+      containers:
+      - image: httpd:2.4-alpine
+        name: neptune-pod-10ab  # change
+        resources:              # add
+          limits:               # add
+            memory: 50Mi        # add
+          requests:             # add
+            memory: 20Mi        # add
+status: {}
+
+Then create the yaml:
+
+k create -f 21.yaml # namespace already set in yaml
+
+To verify all Pods are running we do:
+
+➜ k -n neptune get pod | grep neptune-10ab
+neptune-10ab-7d4b8d45b-4nzj5   1/1     Running            0          57s
+neptune-10ab-7d4b8d45b-lzwrf   1/1     Running            0          17s
+neptune-10ab-7d4b8d45b-z5hcc   1/1     Running            0          17s
+
+</details>
